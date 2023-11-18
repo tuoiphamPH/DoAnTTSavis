@@ -1,0 +1,229 @@
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="test" data-toggle="modal" data-target="#exampleModal" style="display: none">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Thêm vào giỏ hàng thành công
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var pageIndex = 1;
+    var totalPage = 0;
+    function searchByDto(){
+        var categoryLst = [];
+        $('.categoryy:checkbox:checked').each(function () {
+            categoryLst.push($(this).val());
+        });
+        var starLst = [];
+        $('.star:checkbox:checked').each(function () {
+            starLst.push($(this).val());
+        });
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            lstCategory: null,
+            lstStar: null,
+            textSearch : null,
+            sort : null,
+            total : null,
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.fromDate =$("#fromDate").val();
+        bodyData.toDate =$("#toDate").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =pageIndex;
+        bodyData.pageSize =6;
+        bodyData.lstCategory =categoryLst;
+        bodyData.lstStar =starLst;
+        bodyData.textSearch = $("#search").val();
+        bodyData.sort = $("#sort").val();
+        $.ajax({
+            url: '/product/search_report_by_page',
+            type: 'POST',
+            data: bodyData,
+            success: function (result) {
+                console.log(result);
+                pageIndex = result.number + 1;
+                totalPage = result.totalPages;
+                $("#tbodzy").empty();
+                $("#res").empty();
+                $("footer").empty();
+                result.content.map(p =>
+                    $('#tbodzy').append(`
+                            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1 " style="margin-top: 30px; margin-bottom: 30px">
+                                <div class="card">
+                                    <a href="/product/product_detail_user/${p.id}">
+                                        <div style="position: relative" >
+                                            <img class="card-img-top" src="/uploads/${p.image}" style="width: 100%">
+                                            ${(p.sale != null && p.sale != 0) ? '<div style="position: absolute;right: 0;top: 0;width: 40px;height: 25px;text-align:center;background: red;color: white;border-top-right-radius:10px">'+p.sale+'%</div>' : ''}
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <h5><b>${p.name}</b> </h5>
+                                        <div class="d-flex flex-row my-2">
+                                            <div class="text-muted">${p.price} VND</div>
+                                        </div>
+                                        <div>
+                                            <button class="btn rounded my-2" value="${p.id}" onclick="add_toCart(this.value)">Add to cart</button>
+                                             <a href="/product/product_detail_user/${p.id}">
+                                               <button class="btn  rounded my-2">xem chi tiết</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `)
+                );
+                $("#pagination_z").empty();
+                $("#pagination_z").append(`
+                    <li class="page-item mr-1">
+                        <button onclick="prevPage()" style="width: 90px !important;" class="btn w-100 rounded my-2" href="#">Previous</button>
+                    </li>
+                `);
+                for(var i=1;i <= result.totalPages; i++){
+                    if(i == result.number + 1){
+                        $("#pagination_z").append(`
+                          <li class="page-item mr-1">
+                                <button onclick="redirectPage(this.value)" value="${i}" class="btn w-100 rounded my-2 active-custom" href="#">${i}</button>
+                            </li>
+                    `);
+                    }
+                    else{
+                        $("#pagination_z").append(`
+                      <li class="page-item mr-1">
+                            <button onclick="redirectPage(this.value)" value="${i}" class="btn w-100 rounded my-2" href="#">${i}</button>
+                        </li>
+                    `);
+                    }
+
+                }
+                $("#pagination_z").append(`
+                    <li class="page-item">
+                        <button onclick="nextPage()" style="width: 90px !important;" class="btn w-100 rounded my-2" href="#">Next</button>
+                    </li>
+                `);
+
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+    }
+    function add_toCart(value){
+        $.ajax({
+            url: '/product/add_cart/'+value,
+            type: 'POST',
+            data:null,
+            success: function (result) {
+                console.log(result);
+                if(result == true){
+                    document.getElementById("test").click();
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    function redirectPage(value){
+        pageIndex = value;
+        searchByDto();
+    }
+    function prevPage(){
+        if(pageIndex == 1)
+            return;
+        pageIndex = pageIndex - 1;
+        searchByDto();
+    }
+    function nextPage(){
+        if(pageIndex == totalPage)
+            return;
+        pageIndex = pageIndex + 1;
+        searchByDto();
+    }
+    $(document).ready(function (){
+        searchByDto();
+    })
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <div class="footer_custom">
+        <div class="row">
+            <div class="col-md-4 col-lg-4">
+                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Flittlesam.bq&tabs=timeline&width=340&height=420px&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=588776238780562" width="340" height="300px" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            </div>
+            <div class="col-md-4 col-lg-4" STYLE="text-align: justify;">
+                <h6 STYLE="color: black;margin-top: 5px;margin-bottom: 5px" >THÔNG TIN LIÊN HỆ</h6>
+                <h6 STYLE="color: black;margin-top: 5px;margin-bottom: 5px"  >Công ty TNHH XNK và Thương Mại Little Sam</h6>
+                <ul class="menu_footer">
+                    <li class="footer_item">Người vận hàng: anh Nguyễn Hữu Quang</li>
+                    <li class="footer_item">Địa chỉ: Số 269 - Đức Thượng - Hoài Đức - Hà Nội</li>
+                    <li class="footer_item">Hotline: 0976474290 - 0333424955</li>
+                    <li class="footer_item">Email: mo.nt@littlesam.com.vn</li>
+                    <li class="footer_item">Fanpage: <a href="https://www.facebook.com/littlesam.bq">https://www.facebook.com/littlesam.bq</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 col-lg-4" STYLE="color: black">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3722.9478049092395!2d105.6853401153327!3d21.074746791581887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3134567f4de2a4b1%3A0x2bb0aa72971e33dd!2zNzIgVGjDtG4gTuG7mWkgMywgxJDhu6ljIFRoxrDhu6NuZywgSG_DoGkgxJDhu6ljLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1655109146769!5m2!1svi!2s" width="350" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright -->
+
+</div>
+<!-- Footer -->
+<style>
+.footer_custom{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -660px;
+    background-color: #dddddd;
+    border-top: orange 2px solid;
+    color: white;
+    text-align: center;
+    padding: 20px;
+
+}
+.menu_footer{
+    padding: 0;
+    list-style: none;
+}
+.footer_item{
+    color: black;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    border-bottom: 2px dotted orange;
+}
+</style>
+<!-- Messenger Plugin chat Code -->
+</body>
+</html>

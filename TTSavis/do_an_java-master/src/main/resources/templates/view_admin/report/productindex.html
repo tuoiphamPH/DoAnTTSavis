@@ -1,0 +1,170 @@
+
+<section th:replace="/view_admin/fragment/header"></section>
+
+<div style="margin-top: 27px !important;" class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="position: relative">
+        <h6 class="text-white text-capitalize ps-3">Thống kê sản phẩm</h6>
+    </div>
+</div>
+<div class="row mt-5 ml-5 mr-5">
+    <div class="form-group col-md-4">
+        <label >Loại sản phẩm:</label>
+        <select id="categoryId" name="categoryId" class="form-control">
+            <option value="0">Xin mời chọn</option>
+            <option th:each="item : ${categories}" th:text="${item.getName()}" th:value="${item.getId()}">1</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label >Từ ngày:</label>
+        <input type="datetime-local" id="fromDate" name="fromDate" class="form-control" >
+    </div>
+    <div class="form-group col-md-4">
+        <label >Đến ngày:</label>
+        <input type="datetime-local" id="toDate" name="toDate" class="form-control" >
+    </div>
+    <div class="form-group col-md-4">
+        <label >Họ tên người mua:</label>
+        <input type="text" id="fullname_c" name="fullname_c" class="form-control" >
+    </div>
+
+</div>
+<div class="row ml-5 mr-5">
+    <div class="form-group col-md-3 offset-md-9" style="align-self: center; text-align: right;">
+        <button class="btn btn-primary" onclick="onChangeValue()">Tìm kiếm</button>
+        <button class="btn btn-warning" onclick="exportFile()">Xuất excel</button>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row ">
+        <div class="card my-4">
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tên sản phẩm</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên danh mục</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Đơn giá</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Số lượng mua</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Họ tên người mua</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên tài khoản</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày mua</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbodzy">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#report_view").addClass("active bg-gradient-primary");
+    function exportFile(){
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            textSearch: null
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.fromDate =$("#fromDate").val();
+        bodyData.toDate =$("#toDate").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =1;
+        bodyData.pageSize =99999;
+        bodyData.textSearch = $("#fullname_c").val();
+        $.ajax({
+            url: '/file/export_report_by_search',
+            type: 'POST',
+            data: bodyData,
+            xhrFields:{
+                responseType: 'blob'
+            },
+            success: function (result) {
+                console.log(result)
+                var blob = result;
+                var downloadUrl = URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = downloadUrl;
+                a.download = "ExportFile.xls";
+                document.body.appendChild(a);
+                a.click();
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+    }
+    function onChangeValue() {
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            textSearch: null
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.fromDate =$("#fromDate").val();
+        bodyData.toDate =$("#toDate").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =1;
+        bodyData.pageSize =10;
+        bodyData.textSearch = $("#fullname_c").val();
+        $.ajax({
+            url: '/product/search_report_product',
+            type: 'POST',
+            data: bodyData,
+            success: function (result) {
+                console.log(result);
+                $("#tbodzy").empty();
+                result.map(p =>
+                    $('#tbodzy').append(`
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm">${p.nameProduct}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.nameCategory}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.price*p.totalItem - p.price*p.totalItem*p.sale/100}</span>
+                            </td>
+                             <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.totalItem}</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.fullname}</span>
+                            </td>
+                              <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.username}</span>
+                            </td>
+                              <td class="align-middle text-center">
+                                <span class="text-secondary text-xs font-weight-bold">${p.createDate}</span>
+                            </td>
+                        </tr>
+                            `)
+                );
+                console.log(result)
+            }
+            ,
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+</script>
+<section th:replace="/view_admin/fragment/footer"></section>

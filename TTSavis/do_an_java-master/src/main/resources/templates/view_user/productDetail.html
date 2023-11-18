@@ -1,0 +1,348 @@
+<section th:replace="/view_user/fragment/header"></section>
+<style>
+    body {
+        font-family: 'Roboto Condensed', sans-serif;
+        background-color: #f5f5f5
+    }
+
+    .hedding {
+        font-size: 20px;
+        color: #ab8181;
+    }
+
+    .main-section {
+        /*position: absolute;*/
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, 5%);
+    }
+
+    .left-side-product-box img {
+        width: 100%;
+    }
+
+    .left-side-product-box .sub-img img {
+        margin-top: 5px;
+        width: 83px;
+        height: 100px;
+    }
+
+    .right-side-pro-detail span {
+        font-size: 15px;
+    }
+
+    .right-side-pro-detail p {
+        font-size: 25px;
+        color: #a1a1a1;
+    }
+
+    .right-side-pro-detail .price-pro {
+        color: #E45641;
+    }
+
+    .right-side-pro-detail .tag-section {
+        font-size: 18px;
+        color: #5D4C46;
+    }
+
+    .pro-box-section .pro-box img {
+        width: 100%;
+        height: 200px;
+    }
+
+    @media (min-width:360px) and (max-width:640px) {
+        .pro-box-section .pro-box img {
+            height: auto;
+        }
+    }
+    .be-comment-block {
+        margin-bottom: 50px !important;
+        border: 1px solid #edeff2;
+        border-radius: 2px;
+        padding: 50px 70px;
+        border:1px solid #ffffff;
+    }
+
+    .comments-title {
+        font-size: 16px;
+        color: #262626;
+        margin-bottom: 15px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-img-comment {
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin-bottom: 15px;
+    }
+
+    .be-ava-comment {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+
+    .be-comment-content {
+        margin-left: 80px;
+    }
+
+    .be-comment-content span {
+        display: inline-block;
+        width: 49%;
+        margin-bottom: 15px;
+    }
+
+    .be-comment-name {
+        font-size: 13px;
+        font-family: 'Conv_helveticaneuecyr-bold';
+    }
+
+    .be-comment-content a {
+        color: #383b43;
+    }
+
+    .be-comment-content span {
+        display: inline-block;
+        width: 49%;
+        margin-bottom: 15px;
+    }
+
+    .be-comment-time {
+        text-align: right;
+    }
+
+    .be-comment-time {
+        font-size: 11px;
+        color: #b4b7c1;
+    }
+
+    .be-comment-text {
+        font-size: 13px;
+        line-height: 18px;
+        color: #7a8192;
+        display: block;
+        background: #f6f6f7;
+        border: 1px solid #edeff2;
+        padding: 15px 20px 20px 20px;
+    }
+
+    .form-group.fl_icon .icon {
+        position: absolute;
+        top: 1px;
+        left: 16px;
+        width: 48px;
+        height: 48px;
+        background: #f6f6f7;
+        color: #b5b8c2;
+        text-align: center;
+        line-height: 50px;
+        -webkit-border-top-left-radius: 2px;
+        -webkit-border-bottom-left-radius: 2px;
+        -moz-border-radius-topleft: 2px;
+        -moz-border-radius-bottomleft: 2px;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+
+    .form-group .form-input {
+        font-size: 13px;
+        line-height: 50px;
+        font-weight: 400;
+        color: #b4b7c1;
+        width: 100%;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px solid #edeff2;
+        border-radius: 3px;
+    }
+
+    .form-group.fl_icon .form-input {
+        padding-left: 70px;
+    }
+
+    .form-group textarea.form-input {
+        height: 150px;
+    }
+</style>
+<div class="container">
+    <div class="col-md-12 border p-3 main-section bg-white">
+        <div class="row hedding m-0 pl-3 pt-0 pb-3">
+<!--            <span th:text="${product.getName()}"></span>-->
+            Chi tiết sản phẩm B2C
+        </div>
+        <input id="product_id" class="d-none" th:value="${product.getId()}">
+        <div class="row m-0">
+            <div class="col-lg-4 left-side-product-box pb-3">
+                <img th:src="|@{/uploads/}${product.getImage()}|" class="border p-3">
+            </div>
+            <div class="col-lg-8">
+                <div class="right-side-pro-detail border p-3 m-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span>Danh mục: </span>
+                            <p class="m-0 p-0" th:text="${product.getCategoryName()}"></p>
+                        </div>
+                        <div class="col-lg-12">
+                            <p th:style="${product.getSale() >0 ? 'text-decoration: line-through;':''}" class="m-0 p-0 price-pro" th:text="|${product.getPrice()} VNĐ|"></p>
+                            <p class="m-0 p-0 price-pro" th:text="|${product.getPrice() - product.getPrice()*product.getSale()/100} VNĐ|" th:if="${product.getSale() >0}"></p>
+                            <hr class="p-0 m-0">
+                        </div>
+                        <div class="col-lg-12 pt-2">
+                            <h5 th:text="${product.getName()}"></h5>
+                            <span th:text="${product.getContent()}"></span>
+                            <hr class="m-0 pt-2 mt-2">
+                            <label style="font-size: 30px" >
+                                <i class="fa fa-star" aria-hidden="true" style="color:#d0011b;" th:each="item : ${#numbers.sequence(1, rate)}"></i>
+                            </label>
+                            <hr class="m-0 pt-2 mt-2">
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="tag-section"><strong>Tag : </strong><a href="#" th:text="${product.getCategoryName()}"></a></p>
+                        </div>
+                        <div class="col-lg-12">
+                            <h6>Số lượng :</h6>
+                            <input id="totalItem" type="number" class="form-control text-center w-100" value="1">
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <div class="row">
+                                <div class="col-lg-6 pb-2">
+                                    <button onclick="add_toCart1()" class="btn btn-danger w-100">Thêm vào giỏ hàng</button>
+                                </div>
+                                <div class="col-lg-6">
+                                    <a th:href="@{/product/index_user}" class="btn btn-success w-100">Tiếp tục mua sắm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="be-comment-block bg-white">
+        <h1 class="comments-title" th:text="|Comments (${posts.size()})|"></h1>
+
+        <div class="be-comment"  th:each="itemm : ${posts}">
+            <div class="be-img-comment">
+                <a href="blog-detail-2.html">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                </a>
+            </div>
+            <div class="be-comment-content">
+				<span class="be-comment-name">
+					<a href="blog-detail-2.html" th:text="${itemm.userDto.fullname}"></a>
+					</span>
+                <span class="be-comment-time">
+					<i class="fa fa-clock-o"></i>
+<!--					May 27, 2015 at 3:14am-->
+                    <span th:text="${itemm.createDate}"></span>
+				</span>
+                <p class="be-comment-text" th:text="${itemm.content}">
+                </p>
+            </div>
+        </div>
+
+        <form class="form-block">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6" th:if="${nameUser == null}">
+                    <div class="form-group fl_icon">
+                        <div class="icon"><i class="fa fa-user"></i></div>
+                        <input id="fullname_user" class="form-input" type="text" placeholder="Your name">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 fl_icon" th:if="${nameUser == null}">
+                    <div class="form-group fl_icon">
+                        <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                        <input id="email_user" class="form-input" type="text" placeholder="Your email">
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="form-group">
+                        <textarea id="contentt" class="form-input" required="" placeholder="Nhập phản hồi ở đây ..."></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a onclick="reviewPost()" class="btn btn-primary pull-right">Gửi</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<button type="button" class="btn btn-primary" id="test" data-toggle="modal" data-target="#exampleModal" style="display: none">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Thêm vào giỏ hàng thành công
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function  add_toCart1(){
+        var totalItem = $("#totalItem").val();
+        var rqBody  = {
+            idProduct : null,
+            totalItem: null
+        }
+        rqBody.idProduct = $("#product_id").val();
+        rqBody.totalItem = totalItem;
+        $.ajax({
+            url: '/product/add_cart/0',
+            type: 'POST',
+            data: rqBody,
+            success: function (result) {
+                console.log(result);
+                if(result == true){
+                    alert("Thêm vào giỏ hàng thành công!")
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+    }
+    function reviewPost(){
+        var fullname = $("#fullname_user").val();
+        var email = $("#email_user").val();
+        var content = $("#contentt").val();
+        var rqBody  = {
+            idProduct: null,
+            fullname : null,
+            email: null,
+            content: null
+        }
+        rqBody.idProduct = $("#product_id").val();
+        rqBody.fullname = fullname;
+        rqBody.email = email;
+        rqBody.content = content;
+        $.ajax({
+            url: '/review/review_post',
+            type: 'POST',
+            data: rqBody,
+            success: function (result) {
+                console.log(result);
+                if(result == true){
+                    document.getElementById("test").click();
+                    window.location.reload();
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+</script>

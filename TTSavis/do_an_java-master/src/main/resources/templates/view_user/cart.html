@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" >
+    <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+
+</head>
+<body>
+<style>
+    body{
+        background: #ddd;
+        min-height: 100vh;
+        vertical-align: middle;
+        display: flex;
+        font-family: sans-serif;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    .title{
+        margin-bottom: 5vh;
+    }
+    .card{
+        margin: auto;
+        max-width: 950px;
+        width: 90%;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 1rem;
+        border: transparent;
+    }
+    @media(max-width:767px){
+        .card{
+            margin: 3vh auto;
+        }
+    }
+    .cart{
+        background-color: #fff;
+        padding: 4vh 5vh;
+        border-bottom-left-radius: 1rem;
+        border-top-left-radius: 1rem;
+    }
+    @media(max-width:767px){
+        .cart{
+            padding: 4vh;
+            border-bottom-left-radius: unset;
+            border-top-right-radius: 1rem;
+        }
+    }
+    .summary{
+        background-color: #ddd;
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        padding: 4vh;
+        color: rgb(65, 65, 65);
+    }
+    @media(max-width:767px){
+        .summary{
+            border-top-right-radius: unset;
+            border-bottom-left-radius: 1rem;
+        }
+    }
+    .summary .col-2{
+        padding: 0;
+    }
+    .summary .col-10
+    {
+        padding: 0;
+    }.row{
+         margin: 0;
+     }
+    .title b{
+        font-size: 1.5rem;
+    }
+    .main{
+        margin: 0;
+        padding: 2vh 0;
+        width: 100%;
+    }
+    .col-2, .col{
+        padding: 0 1vh;
+    }
+    a{
+        padding: 0 1vh;
+    }
+    .close{
+        margin-left: auto;
+        font-size: 0.7rem;
+    }
+    img{
+        width: 3.5rem;
+    }
+    .back-to-shop{
+        margin-top: 4.5rem;
+    }
+    h5{
+        margin-top: 4vh;
+    }
+    hr{
+        margin-top: 1.25rem;
+    }
+    form{
+        padding: 2vh 0;
+    }
+    select{
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1.5vh 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    input{
+        border: 1px solid rgba(0, 0, 0, 0.137);
+        padding: 1vh;
+        margin-bottom: 4vh;
+        outline: none;
+        width: 100%;
+        background-color: rgb(247, 247, 247);
+    }
+    input:focus::-webkit-input-placeholder
+    {
+        color:transparent;
+    }
+    .btn{
+        background-color: #000;
+        border-color: #000;
+        color: white;
+        width: 100%;
+        font-size: 0.7rem;
+        margin-top: 4vh;
+        padding: 1vh;
+        border-radius: 0;
+    }
+    .btn:focus{
+        box-shadow: none;
+        outline: none;
+        box-shadow: none;
+        color: white;
+        -webkit-box-shadow: none;
+        -webkit-user-select: none;
+        transition: none;
+    }
+    .btn:hover{
+        color: white;
+    }
+    a{
+        color: black;
+    }
+    a:hover{
+        color: black;
+        text-decoration: none;
+    }
+    #code{
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0.253) , rgba(255, 255, 255, 0.185)), url("https://img.icons8.com/small/16/000000/long-arrow-right.png");
+        background-repeat: no-repeat;
+        background-position-x: 95%;
+        background-position-y: center;
+    }
+</style>
+<div class="card" style="max-width: 1200px">
+    <div class="row">
+        <div class="col-md-8 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col"><h4><b>Giỏ hàng</b></h4></div>
+                    <div class="col align-self-center text-right text-muted" th:text="|Số Loại hàng ${lstProduct.size()}|"></div>
+                </div>
+            </div>
+                <table class="table ">
+                    <tr>
+                        <th style="text-align: center">Ảnh</th>
+                        <th style="text-align: center">Tên sản phẩm</th>
+                        <th style="text-align: center">Số lượng</th>
+                        <th style="text-align: center">Giảm giá</th>
+                        <th style="text-align: center">Tổng tiền</th>
+                        <th style="text-align: center"></th>
+                    </tr>
+                <tbody id="cartTotal">
+
+                </tbody>
+                </table>
+            <div class="back-to-shop"><a th:href="@{/product/index_user}">&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+        </div>
+        <div class="col-md-4 summary" id="order">
+<!--            <div><h5><b>Đơn Đặt hàng</b></h5></div>-->
+<!--            <hr>-->
+<!--            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">-->
+<!--                <div class="col">Số loại hàng</div>-->
+<!--                <div class="col text-right" th:text="|${lstProduct.size()}|"></div>-->
+<!--            </div>-->
+<!--            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">-->
+<!--                <div class="col">Số lượng hàng</div>-->
+<!--                <div class="col text-right" th:text="|${sumtotal}|"></div>-->
+<!--            </div>-->
+<!--            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">-->
+<!--                <div class="col">Tổng giá </div>-->
+<!--                <div class="col text-right" th:text="| ${sumPrice -30000} VND|"></div>-->
+<!--            </div>-->
+<!--            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">-->
+<!--                <div class="col">Phí ship</div>-->
+<!--                <div class="col text-right" >30000 VND</div>-->
+<!--            </div>-->
+<!--            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">-->
+<!--                <div class="col">Tổng tiền </div>-->
+<!--                <div class="col text-right" th:text="|${sumPrice} VND|"></div>-->
+<!--            </div>-->
+<!--            <button type="submit"  class="btn" data-toggle="modal" data-target="#exampleModal">BUY</button>-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" class="modal-content" th:action="@{/product/pay}" th:object="${receiptDto}">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đặt hàng </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label >Tên đơn đặt hàng </label>
+                    <input type="text"  class="form-control" name ="name">
+                </div>
+                <div class="form-group">
+                    <label >Số điện thoại </label>
+                    <input type="text"  class="form-control" name ="phoneNumber">
+                </div>
+                <div class="form-group">
+                    <label >Địa chỉ </label>
+                    <input type="text"  class="form-control" name ="address">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+    function payNganLuong(){
+        $.ajax({
+            url: "https://sandbox.nganluong.vn:8088/nl30/checkout.api.nganluong.post.php?function=SetExpressCheckout&cur_code=vnd&version=3.1&merchant_id=50232&receiver_email=quyenproxxxxx@gmail.com&merchant_password=93c1df9907d3b6cc3c1da5d0310de9bb&order_code=ma_don_hang01&total_amount=2000&payment_method=ATM_ONLINE&bank_code=EXB&payment_type=null&order_description=Thanh toan test thu dong hang&tax_amount=0&fee_shipping=0&discount_amount=0&return_url=http://localhost:8890/nganluong/success&cancel_url=http://localhost:8890/nganluong/error&buyer_fullname=Nguyen+Huu+Quyen&buyer_email=nguyenquyen5120@gmail.com&buyer_mobile=0976490413",
+
+            success: function (resultzz) {
+                console.log(resultzz);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    var total;
+    function searchByDto(){
+        var categoryLst = [];
+        $('.categoryy:checkbox:checked').each(function () {
+            categoryLst.push($(this).val());
+        });
+        var starLst = [];
+        $('.star:checkbox:checked').each(function () {
+            starLst.push($(this).val());
+        });
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            lstCategory: null,
+            lstStar: null,
+            total: null,
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.fromDate =$("#fromDate").val();
+        bodyData.toDate =$("#toDate").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =1;
+        bodyData.pageSize =10;
+        bodyData.lstCategory =categoryLst;
+        bodyData.lstStar =starLst;
+        $.ajax({
+            url: '/product/search_report',
+            type: 'POST',
+            data: bodyData,
+            success: function (result) {
+                $("#tbodzy").empty();
+                $("#res").empty();
+                $("#res").append(`
+                     Showing ${result.length} results
+                `);
+                result.map(p =>
+                    $('#tbodzy').append(`
+                            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                                <div class="card">
+                                    <a href="#">
+                                        <img class="card-img-top" src="/uploads/${p.image}">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5><b>${p.name}</b> </h5>
+                                        <div class="d-flex flex-row my-2">
+                                            <div class="text-muted">${p.price} VND</div>
+                                            <div class="ml-auto">
+                                                <button class="border rounded bg-white sign"><span class="fa fa-plus" id="orange"></span></button>
+                                                <span class="px-sm-1">1</span>
+                                                <button class="border rounded bg-white sign"><span class="fa fa-minus" id="orange"></span></button>
+                                            </div>
+                                        </div>
+                                        <button class="btn w-100 rounded my-2"value="${p.id}" onclick="add_toCart(this.value)">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                            `)
+                );
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+    }
+
+
+    function editTotal(value,id){
+        var categoryLst = [];
+        $('.categoryy:checkbox:checked').each(function () {
+            categoryLst.push($(this).val());
+        });
+        var starLst = [];
+        $('.star:checkbox:checked').each(function () {
+            starLst.push($(this).val());
+        });
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            lstCategory: null,
+            lstStar: null,
+            total: null,
+            idProduct : null
+        };
+        bodyData.total =value;
+        bodyData.idProduct = id;
+
+        $.ajax({
+            url: '/product/cartTotal',
+            type: 'POST',
+            data: bodyData,
+            success: function (result) {
+                $("#cartTotal").empty();
+                result.productDtos.map(p =>
+                    $('#cartTotal').append(`
+                    <tr >
+                    <th style="text-align: center;width: 100px;height: 100px" > <img width="100%" height="100%" class="img-fluid" src="/uploads/${p.image}"></th>
+                    <th style="text-align: center">${p.name}</th>
+                    <th style="text-align: center"><div style="display: flex">
+                            <button onclick="prevTotal(${p.id})" style="border: 1px solid #3333;height: 20px">-</button>
+                            <a href="#" > <input value="${p.totalItem}" id="${p.id}" style="border:none; width: 40px; padding-left: 15px;height: 20px ;border: 1px solid #3333;">
+                            </a>
+                            <button onclick="nextTotal(${p.id})"  style="border: 1px solid #3333;height: 20px">+</button>
+                            </div></th>
+                    <th style="text-align: center">${p.sale} %</th>
+                    <th style="text-align: center">${p.price - p.sale*p.price/100} VND</th>
+                    <th style="text-align: center"> <form method="post" action="/product/removeCart" style="padding: 0">
+                                <input type="hidden" value="${p.id}"  name="idProduct">
+                                <button type="submit" style="border: 1px solid #3333;">
+                                    xóa
+                                </button>
+                            </form>
+                            </th>
+                    </tr>
+                            `)
+                ),
+                    $("#order").empty();
+                    $('#order').append(`
+                 <div><h5><b>Đơn Đặt hàng</b></h5></div>
+            <hr>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Số loại hàng</div>
+                <div class="col text-right" >${result.length}</div>
+            </div>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Số lượng hàng</div>
+                <div class="col text-right" >${result.sumtotal}</div>
+            </div>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Tổng giá </div>
+                <div class="col text-right" >${result.sumPrice } VND</div>
+            </div>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Phí ship</div>
+                <div class="col text-right" >30000 VND</div>
+            </div>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">Tổng tiền </div>
+                <div class="col text-right" >${result.sumPrice + 30000} VND</div>
+            </div>
+            <button type="submit"  class="btn" data-toggle="modal" data-target="#exampleModal">Đặt hàng</button>
+                            `)
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+    }
+
+    function add_toCart(value){
+        $.ajax({
+            url: '/product/add_cart/'+value,
+            type: 'POST',
+            data: null,
+            success: function (result) {
+                console.log(result);
+                if(result == true){
+                    alert("Thêm vào giỏ hàng thành công!")
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+    $(document).ready(function (){
+        editTotal(0,0);
+    })
+    function nextTotal(id){
+        var a = parseInt(document.getElementById(id).value);
+        a += 1
+        document.getElementById(id).value = a;
+        editTotal(a,id);
+    }
+
+    function prevTotal(id){
+        var a = parseInt(document.getElementById(id).value);
+        a -= 1;
+        if (a < 0 ){
+            a = 0;
+        }
+        document.getElementById(id).value = a;
+        editTotal(a,id);
+    }
+
+</script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

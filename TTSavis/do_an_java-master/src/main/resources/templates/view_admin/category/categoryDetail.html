@@ -1,0 +1,16 @@
+<section th:replace="/view_admin/fragment/header"></section>
+<div class="mt-5 ml-5 mr-5">
+    <h1>Cập nhật</h1>
+    <form method="post" th:action="@{/category/create_update_category}" th:object="${categoryDto}" >
+        <input class="d-none" type="text" th:value="${categoryDto.getId()}" name="id" >
+        <div class="form-group">
+            <label for="name">Tên danh mục:</label>
+            <input type="text" th:value="${categoryDto.getName()}" name="name" class="form-control" id="name" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Lưu mới</button>
+    </form>
+</div>
+<script>
+    $("#category_view").addClass("active bg-gradient-primary");
+</script>
+<section th:replace="/view_admin/fragment/footer"></section>

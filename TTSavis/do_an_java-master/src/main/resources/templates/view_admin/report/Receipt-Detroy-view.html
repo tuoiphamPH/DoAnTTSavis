@@ -1,0 +1,250 @@
+<section th:replace="/view_admin/fragment/header"></section>
+
+<div style="margin-top: 27px !important;" class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="position: relative">
+        <h6 class="text-white text-capitalize ps-3">Thống kê đơn hàng</h6>
+    </div>
+</div>
+<form id="from">
+    <div class="row mt-5 ml-5 mr-5">
+        <div class="form-group col-md-4">
+            <label >Từ ngày:</label>
+            <input type="datetime-local" id="fromDate" name="fromDate" class="form-control" >
+        </div>
+        <div class="form-group col-md-4">
+            <label >Đến ngày:</label>
+            <input type="datetime-local" id="toDate" name="toDate" class="form-control" >
+        </div>
+        <div class="form-group col-md-4">
+            <label >Tên hóa đơn:</label>
+            <input type="text" id="fullname_c" name="fullname_c" class="form-control" >
+        </div>
+    </div>
+    <button style="position: relative; left: 70px ; top: 45px" class="btn btn-primary" id="btnFrom">Tìm kiếm</button>
+</form>
+<div class="row ml-5 mr-5">
+    <div class="form-group col-md-3 offset-md-9" style="align-self: center; text-align: right;">
+        <button  class="btn btn-warning" onclick="exportFileExcel()">Xuất excel</button>
+    </div>
+</div>
+<button data-toggle="modal" data-target="#exampleModal" id="btnDetail" style="visibility: hidden"></button>
+<div class="container-fluid py-4">
+    <div class="row ">
+        <div class="card my-4">
+            <div class="card-body px-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên hoá đơn </th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày mua</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Số lượng mua</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">phí ship  </th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">thành tiền </th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">trạng thái </th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hành động </th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbodzy">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <nav aria-label="
+
+
+            ..." style="position: relative">
+                <ul class="pagination" style="position: absolute;
+                        right: 44%;
+                        padding: 20px;" id ="pagination_z">
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    var exportFile;
+    var fromDate;
+    var toDate;
+    var textSearch;
+    $("#report_view").addClass("active bg-gradient-primary");
+
+    document.getElementById("btnFrom").addEventListener('click',function (e){
+        e.preventDefault();
+        toDate = document.getElementById("toDate").value;
+        fromDate = document.getElementById("fromDate").value;
+        textSearch = document.getElementById("fullname_c").value;
+        onChangeValue();
+    })
+    function onChangeValue() {
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            textSearch: null,
+            export : null,
+            status : null
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =pageIndex;
+        bodyData.fromDate = fromDate;
+        bodyData.toDate = toDate;
+        bodyData.export = exportFile;
+        bodyData.textSearch = textSearch;
+        bodyData.status = 5;
+        $.ajax({
+            url: '/receipt/search_report_product',
+            type: 'POST',
+            data: bodyData,
+            success: function (result) {
+                console.log(result);
+                $("#tbodzy").empty();
+                pageIndex = result.number + 1;
+                totalPage = result.totalPages;
+                result.content.map(p =>
+                    $('#tbodzy').append(`
+                         <tr>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">${p.name}</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">${p.createTime}</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">${p.total}</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">${p.priceShip}</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">${p.price}</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Susscess</th>
+                            <th>
+                                   <div style="display: flex;justify-content: center">
+                                        <form style="margin-left: 10px" method="post" action="/receipt/detail">
+                                            <input type="hidden" id="username"  name ="id" value="${p.id}" >
+                                            <button onclick="" class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;">Detail</button>
+                                        </form>
+                                    </div>
+                                </th>
+                        </tr>
+                            `)
+                );
+                $("#pagination_z").empty();
+                $("#pagination_z").append(`
+                      <li class="page-item ">
+                                  <button onclick="prevPage()" style="background: none;border: none">
+                                      <a class="page-link" href="javascript:;">
+                                        <span class="material-icons">
+                                          keyboard_arrow_left
+                                        </span>
+                                          <span class="sr-only">Previous</span>
+                                      </a>
+                                  </button>
+                                </li>
+                `);
+                for(var i=1;i <= result.totalPages; i++){
+                    if(i == result.number + 1){
+                        $("#pagination_z").append(`
+                          <li class="page-item active">
+                                <button class="page-link active" onclick="redirectPage(this.value)" value="${i}">${i}</button>
+                             </li>
+                    `);
+                    }
+                    else{
+                        $("#pagination_z").append(`
+                      <li class="page-item">
+                                <button class="page-link" onclick="redirectPage(this.value)" value="${i}">${i}</button>
+                             </li>
+                    `);
+                    }
+                }
+                $("#pagination_z").append(`
+                    <li class="page-item">
+                                    <button onclick="nextPage()" style="background: none;border: none">
+                                        <a class="page-link" href="javascript:;">
+                                        <span class="material-icons">
+                                          keyboard_arrow_right
+                                        </span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </button>
+                                </li>
+                `);
+
+                console.log(result);
+            }
+
+            ,
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    }
+    $(document).ready(function (){
+        onChangeValue();
+
+    })
+    function exportFileExcel(){
+        exportFile = "yes";
+        var bodyData = {
+            categoryId : null,
+            fromDate : null,
+            toDate : null,
+            rating : null,
+            pageIndex : null,
+            pageSize : null,
+            textSearch: null,
+            status:null
+        };
+        bodyData.categoryId = $("#categoryId").val();
+        bodyData.rating =$("#rating").val();
+        bodyData.pageIndex =pageIndex;
+        bodyData.pageSize = 99999;
+        bodyData.fromDate = fromDate;
+        bodyData.toDate = toDate;
+        bodyData.export = exportFile;
+        bodyData.textSearch = textSearch;
+        bodyData.status = 1;
+        $.ajax({
+            url: '/receipt/export_report_by_search',
+            type: 'POST',
+            data: bodyData,
+            xhrFields:{
+                responseType: 'blob'
+            },
+            success: function (result) {
+                console.log(result)
+                var blob = result;
+                var downloadUrl = URL.createObjectURL(blob);
+                var a = document.createElement("a");
+                a.href = downloadUrl;
+                a.download = "ExportFile.xls";
+                document.body.appendChild(a);
+                a.click();
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+        exportFile = null;
+    }
+    function redirectPage(value){
+        pageIndex = value ;
+        onChangeValue();
+    }
+    function prevPage(){
+        if(pageIndex == 1){
+            pageIndex = totalPage
+        }else {
+            pageIndex = pageIndex - 1;
+        }
+        onChangeValue();
+    }
+    function nextPage(){
+        if(pageIndex == totalPage){
+            pageIndex = 1
+        }else {
+            pageIndex = pageIndex + 1;
+        }
+        onChangeValue();
+    }
+    var pageIndex = 1;
+    var totalPage = 0;
+</script>
+<section th:replace="/view_admin/fragment/footer"></section>

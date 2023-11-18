@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+    <title>
+        B2C SOFT
+    </title>
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <!-- Nucleo Icons -->
+    <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="/static/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- CSS Files -->
+    <link id="pagestyle" href="/static/assets/css/material-dashboard.css?v=3.0.2" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" >
+    <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+</head>
+<style>
+    .active-custom{
+        background: orange !important;
+        color: white !important;
+    }
+    *{
+        box-sizing: border-box;
+    }
+    #search{
+        outline: none;
+        border: none;
+        display: inline-block;
+
+    }
+    #burgundy{
+        color: rgb(153, 40, 59);
+    }
+    #orange,select,.btn{
+        color: orange;
+    }
+    .fa-search{
+        font-size: 20px;
+        padding: 10px;
+        margin-bottom: 3px;
+        padding-right: 20px;
+    }
+    .search-nav-item{
+        height: 40px;
+    }
+    nav{
+        padding: 0px 100px;
+    }
+    .fa-user-o,.fa-shopping-cart{
+        font-size: 20px;
+        padding: 4px;
+    }
+    .form-group{
+        margin-bottom: 5px;
+    }
+    label{
+        padding-left: 10px;
+    }
+    .form-group:last-child{
+        margin-bottom: 0;
+    }
+    h6{
+        margin-bottom: 0px;
+    }
+    #sort{
+        outline: none;
+        border: none;
+    }
+    .btn{
+        border: 1px solid orange;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+    .btn:hover{
+        color: #fff;
+        background-color: orange;
+    }
+    .card-body{
+        padding: 8px;
+    }
+    .sign{
+        width: 25px;
+        height: 25px;
+    }
+    .discount{
+        border: 1px solid orange;
+        border-radius: 5px;
+        width: 65px;
+        position: absolute;
+        top: 2%;
+    }
+    /*@media(min-width:1200px){*/
+    /*    #search{*/
+    /*        width: 300px;*/
+    /*        padding: 5px;*/
+    /*        padding-left: 20px;*/
+    /*    }*/
+    /*    .search-nav-item{*/
+    /*        margin-left: 400px;*/
+    /*        width: 350px;*/
+    /*    }*/
+    /*    .fa-user-o{*/
+    /*        margin-left: 300px;*/
+    /*    }*/
+    /*    .text{*/
+    /*        display: none;*/
+    /*    }*/
+    /*    .fa-user-o,.fa-shopping-cart{*/
+    /*        font-size: 20px;*/
+    /*        padding-left: 20px;*/
+    /*    }*/
+    /*    #sidebar{*/
+    /*        width: 30%;*/
+    /*        padding: 20px;*/
+    /*        float: left;*/
+    /*    }*/
+    /*    #products{*/
+    /*        width: 70%;*/
+    /*        padding: 10px;*/
+    /*        margin: 0;*/
+    /*        float: right;*/
+    /*    }*/
+    /*    .card{*/
+    /*        width: 300px;*/
+    /*        height: 330px;*/
+    /*        border: none;*/
+    /*    }*/
+    /*    .card-img-top{*/
+    /*        width: 295px;*/
+    /*        height: 200px;*/
+    /*        border-radius: 10px;*/
+    /*    }*/
+    /*    del{*/
+    /*        padding-right: 2px;*/
+    /*    }*/
+    /*    .filter,#mobile-filter{*/
+    /*        display: none;*/
+    /*    }*/
+    /*    .user{*/
+    /*        margin-left: 200px;*/
+    /*    }*/
+    /*}*/
+    @media(min-width:1200px) and (max-width:1400px){
+        .table-detail{
+            width: 1000px !important;
+        }
+        .user{
+            margin-left: 200px ;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 350px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 300px;
+        }
+        .text{
+            display: none;
+        }
+        .fa-user-o,.fa-shopping-cart{
+            font-size: 20px;
+            padding-left: 20px;
+        }
+        #sidebar{
+            width: 30%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 70%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            width: 300px;
+            height: 330px;
+            border: none;
+        }
+        .card-img-top{
+            width: 295px;
+            height: 200px;
+            border-radius: 10px;
+        }
+        del{
+            padding-right: 2px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(min-width:992px) and (max-width:1199px){
+        .table-detail{
+            width: 800px !important;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 300px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 160px;
+        }
+        .text{
+            display: none;
+        }
+        #sidebar{
+            width: 30%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 70%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            width: 200px;
+            height: 330px;
+            border: none;
+        }
+        .card-img-top{
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+        }
+        .fa-plus,.fa-minus{
+            font-size: 12px;
+        }
+        .sign{
+            height: 25px;
+        }
+        .price{
+            width: 99px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(min-width:768px) and (max-width:991px){
+        .table-detail{
+            width: 500px;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 100px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 80px;
+        }
+        .text{
+            display: none;
+        }
+        #sidebar{
+            width: 35%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 65%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            border: none;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(min-width:576px) and (max-width:767px){
+        .text{
+            display: none;
+        }
+        .search-nav-item{
+            margin-left: 35px;
+            width: 270px;
+        }
+        #search{
+            width: 240px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .fa-search{
+            padding: 3px;
+            font-size: 18px;
+        }
+        #sidebar{
+            width: 40%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 60%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            border: none;
+        }
+        #off{
+            padding-left: 2px;
+        }
+        #sorting span,#res{
+            font-size: 14px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(max-width:575px){
+        .search-nav-item{
+            margin: 0;
+            width: 100%;
+            margin-top: 10px;
+        }
+        #search{
+            width: 80%;
+            padding-left: 10px;
+            margin-top: 10px;
+            padding-right: 10px;
+        }
+        .fa-search{
+            padding: 10px;
+            font-size: 18px;
+        }
+        #sidebar{
+            display: none;
+        }
+        .filter{
+            margin-left: 70%;
+            margin-top: 2%;
+        }
+        #sorting,#res{
+            font-size: 12px;
+            margin-top: 2%;
+        }
+    }
+    @media(min-width:1742px) and (max-width:2000px){
+        .table-detail{
+            width: 1600px !important;
+        }
+        .user{
+            margin-left: 350px;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 600px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 600px;
+        }
+        .text{
+            display: none;
+        }
+        .fa-user-o,.fa-shopping-cart{
+            font-size: 20px;
+            padding-left: 20px;
+        }
+        #sidebar{
+            width: 30%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 70%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            width: 300px;
+            height: 330px;
+            border: none;
+        }
+        .card-img-top{
+            width: 295px;
+            height: 200px;
+            border-radius: 10px;
+        }
+        del{
+            padding-right: 2px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(min-width:1552px) and (max-width:1741px){
+        .table-detail{
+            width: 1400px !important;
+        }
+        .user{
+            margin-left: 250px;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 400px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 600px;
+        }
+        .text{
+            display: none;
+        }
+        .fa-user-o,.fa-shopping-cart{
+            font-size: 20px;
+            padding-left: 20px;
+        }
+        #sidebar{
+            width: 30%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 70%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            width: 300px;
+            height: 330px;
+            border: none;
+        }
+        .card-img-top{
+            width: 295px;
+            height: 200px;
+            border-radius: 10px;
+        }
+        del{
+            padding-right: 2px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+    @media(min-width:1400px) and (max-width:1551px){
+        .table-detail{
+            width: 1200px !important;
+        }
+        .user{
+            margin-left: 250px;
+        }
+        #search{
+            width: 300px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+        .search-nav-item{
+            margin-left: 300px;
+            width: 350px;
+        }
+        .fa-user-o{
+            margin-left: 600px;
+        }
+        .text{
+            display: none;
+        }
+        .fa-user-o,.fa-shopping-cart{
+            font-size: 20px;
+            padding-left: 20px;
+        }
+        #sidebar{
+            width: 30%;
+            padding: 20px;
+            float: left;
+        }
+        #products{
+            width: 70%;
+            padding: 10px;
+            margin: 0;
+            float: right;
+        }
+        .card{
+            width: 300px;
+            height: 330px;
+            border: none;
+        }
+        .card-img-top{
+            width: 295px;
+            height: 200px;
+            border-radius: 10px;
+        }
+        del{
+            padding-right: 2px;
+        }
+        .filter,#mobile-filter{
+            display: none;
+        }
+    }
+</style>
+<body class="g-sidenav-show  bg-gray-200">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- End Navbar -->
+    <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom">
+        <a class="navbar-brand ml-2 font-weight-bold" th:href="@{/product/index_user}"><span id="burgundy">B</span><span id="orange">2C</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor" aria-controls="navbarColor" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor">
+            <ul class="navbar-nav" style="position: relative">
+                <li class="nav-item rounded bg-light search-nav-item d-flex">
+                    <input type="text" id="search" class="bg-light" placeholder="Nhập tên sản phẩm ...">
+                    <a href="#" onclick="searchByDto()">
+                        <span class="fa fa-search text-muted"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/product/cart}"><span class="fa fa-shopping-cart"></span><span class="text">Cart</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="|@{/receipt/user}?username=${nameUser}|"><i class="fa fa-cc-visa" aria-hidden="true"></i><span class="text"></span></a>
+                </li>
+
+                <li class="nav-item user" th:if="${nameUser} != null" style="display: flex;">
+                    <a th:text="|Xin chào: ${nameUser}|" th:if="${nameUser} != null" class="nav-link text-body  px-0 mr-3"></a>
+                    <a th:href="@{/logout}" class="nav-link text-body font-weight-bold px-0 ">
+                        Đăng xuất
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div style="margin-top: 27px !important;" class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="position: relative">
+        <h6 class="text-white text-capitalize ps-3">chi tiết đơn hàng</h6>
+    </div>
+</div>
+    <div class="container-fluid py-4">
+        <div class="row ">
+            <div class="card my-4 table-detail" style=" height: auto; position: relative; left: 10%;" >
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="position: relative">
+                        <h6 class="text-white text-capitalize ps-3">đơn hàng</h6>
+                    </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                            <tr>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên Khách hàng </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên số điện thoại </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên địa chỉ </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày mua</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Số lượng mua</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">phí ship </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">thành tiền </th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbodzy">
+                            <tr>
+                                <td style="text-align: center">
+                                    <h6  th:text="${receipt.fullname} ? ${receipt.fullname} :  ${receipt.listProductDTO.get(0).username}"></h6>
+                                </td>
+                                <td style="text-align: center">
+                                    <h6  th:text="${receipt.phoneNumber}"></h6>
+                                </td>
+
+                                <td style="text-align: center">
+                                    <h6 th:text="${receipt.address}"></h6>
+                                </td>
+                                <td style="text-align: center">
+                                    <h6  th:text="${receipt.createTime}"></h6>
+                                </td>
+                                <td style="text-align: center">
+                                    <h6 th:text="${receipt.total}"></h6>
+                                </td>
+                                <td style="text-align: center">
+                                    <h6  th:text="${receipt.priceShip}"></h6>
+                                </td>
+                                <td style="text-align: center">
+                                    <h6  th:text="${receipt.price}"></h6>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-4">
+        <div class="row ">
+            <div class="card my-4 table-detail"  style="height: auto; position: relative; left: 10%;" >
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3" style="position: relative">
+                        <h6 class="text-white text-capitalize ps-3">Thông tin chi tiết sản phẩm của đơn hàng</h6>
+                    </div>
+                </div>
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tên Người dùng</th>
+                            <th style="text-align: center" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ảnh</th>
+                            <th style="text-align: center" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"> Số lượng</th>
+                            <th style="text-align: center" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giá </th>
+                            <th style="text-align: center" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giảm giá </th>
+                            <th style="text-align: center" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thành tiền </th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbodydetail">
+                        <tr th:each="item : ${receipt.getListProductDTO()}">
+                            <td style="text-align: center">
+                                <h6  th:text="${item.nameProduct}"></h6>
+                            </td>
+                            <td style="text-align: center">
+                                <img th:src="|@{/uploads/}${item.image}|" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                            </td>
+                            <td style="text-align: center">
+                                <h6 th:text="${item.totalItem}"></h6>
+
+                            </td>
+                            <td style="text-align: center">
+                                <h6 th:text="${item.price}"></h6>
+                            </td>
+                            <td style="text-align: center">
+                                <h6  th:text="${item.sale}"></h6>
+                            </td>
+                            <td style="text-align: center">
+                                <h6  th:text="${item.price} * ${item.totalItem} - ${item.price} * ${item.totalItem}*${item.sale}/100"></h6>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+
